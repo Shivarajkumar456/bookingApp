@@ -6,6 +6,7 @@ const userList = document.querySelector('#users');
 
 btn.addEventListener('click', onSubmit);
 userList.addEventListener('click', removeItem);
+userList.addEventListener('click', editItem);
 
 function onSubmit(e) {
     e.preventDefault();
@@ -20,6 +21,11 @@ function onSubmit(e) {
         let delBtn = document.createElement('button');
         delBtn.className = 'float-right delete';
         delBtn.appendChild(document.createTextNode('Delete'));
+        // create edit button
+        let editBtn = document.createElement('button');
+        editBtn.className = 'float-right edit';
+        editBtn.appendChild(document.createTextNode('Edit'));
+        li.appendChild(editBtn);
         li.appendChild(delBtn);
         userList.appendChild(li);
         let myObj = {name: nameInput.value, email: emailInput.value, phone:phoneInput.value};
@@ -43,4 +49,16 @@ function removeItem(e){
       localStorage.removeItem(email);
       }
     }
+  }
+
+  function editItem(e) {
+    let li = e.target.parentElement;
+    let userData = li.textContent.split(" - ");
+    nameInput.value = userData[0];
+    emailInput.value = userData[1];
+    phoneInput.value = userData[2];
+    // Remove the list item from the list
+    userList.removeChild(li);
+    // Update the local storage
+    localStorage.removeItem(emailInput.value);
   }
