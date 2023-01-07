@@ -42,17 +42,33 @@ function onSubmit(e) {
     }
 }
 
-function removeItem(e){
-    if(e.target.classList.contains('delete')){
-      if(confirm('Are You Sure?')){
-        var li = e.target.parentElement;
-        userList.removeChild(li);
-        let email = li.textContent.split(" - ")[1];
-      // Remove the user from local storage
-      localStorage.removeItem(email);
-      }
+// function removeItem(e){
+//     if(e.target.classList.contains('delete')){
+//       if(confirm('Are You Sure?')){
+//         var li = e.target.parentElement;
+//         userList.removeChild(li);
+//         let email = li.textContent.split(" - ")[1];
+//       // Remove the user from local storage
+//       localStorage.removeItem(email);
+//       }
+//     }
+//   }
+function removeItem(e) {
+  if (e.target.classList.contains('delete')) {
+    if (confirm('Are You Sure?')) {
+      // Get the list item element and the email of the user
+      let li = e.target.parentElement;
+      let id = li.getAttribute('data-id');
+      // Make an HTTP DELETE request to the API with the user's email
+      axios.delete(`https://crudcrud.com/api/69555cc51d6f479c9004d1f601d7d4f1/bookingData/${id}`)
+        .then(res => {
+          // Remove the list item from the user list
+          userList.removeChild(li);
+        }).catch(err => console.log(err));
     }
   }
+}
+
 
   function editItem(e) {
     let li = e.target.parentElement;
@@ -74,6 +90,7 @@ function removeItem(e){
           const user = res.data[i];
           // Create a new list item for each user
           const li = document.createElement('li');
+          li.setAttribute('data-id', user._id);
           li.appendChild(document.createTextNode(`${user.name} - ${user.email} - ${user.phone}`));
           // Create Delete button
           let delBtn = document.createElement('button');
