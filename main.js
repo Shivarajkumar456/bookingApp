@@ -33,7 +33,8 @@ function onSubmit(e) {
         // let myObjString = JSON.stringify(myObj);
         // localStorage.setItem(emailInput.value, myObjString);
         // let myObjDeserialize = JSON.parse(localStorage.getItem(emailInput.value));
-        axios.post("https://crudcrud.com/api/69555cc51d6f479c9004d1f601d7d4f1/bookingData", myObj);
+        axios.post("https://crudcrud.com/api/69555cc51d6f479c9004d1f601d7d4f1/bookingData", myObj)
+        .then((res)=>console.log(res)).catch(err => console.log(err));
         // console.log(myObjDeserialize);
         nameInput.value = '';
         emailInput.value = '';
@@ -64,3 +65,29 @@ function removeItem(e){
     // Update the local storage
     localStorage.removeItem(emailInput.value);
   }
+
+  function showUserList() {
+    axios.get("https://crudcrud.com/api/69555cc51d6f479c9004d1f601d7d4f1/bookingData")
+      .then(res => {
+        // Iterate through the list of users
+        for (let i = 0; i < res.data.length; i++) {
+          const user = res.data[i];
+          // Create a new list item for each user
+          const li = document.createElement('li');
+          li.appendChild(document.createTextNode(`${user.name} - ${user.email} - ${user.phone}`));
+          // Create Delete button
+          let delBtn = document.createElement('button');
+          delBtn.className = 'float-right delete';
+          delBtn.appendChild(document.createTextNode('Delete'));
+          // Create Edit button
+          let editBtn = document.createElement('button');
+          editBtn.className = 'float-right edit';
+          editBtn.appendChild(document.createTextNode('Edit'));
+          li.appendChild(editBtn);
+          li.appendChild(delBtn);
+          // Add the list item to the user list
+          userList.appendChild(li);
+        }
+      }).catch(err => console.log(err));
+  }
+  
