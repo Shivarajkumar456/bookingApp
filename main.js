@@ -7,6 +7,7 @@ const userList = document.querySelector('#users');
 btn.addEventListener('click', onSubmit);
 userList.addEventListener('click', removeItem);
 userList.addEventListener('click', editItem);
+window.addEventListener('load', showUserList);
 
 function onSubmit(e) {
     e.preventDefault();
@@ -29,10 +30,11 @@ function onSubmit(e) {
         li.appendChild(delBtn);
         userList.appendChild(li);
         let myObj = {name: nameInput.value, email: emailInput.value, phone:phoneInput.value};
-        let myObjString = JSON.stringify(myObj);
-        localStorage.setItem(emailInput.value, myObjString);
-        let myObjDeserialize = JSON.parse(localStorage.getItem(emailInput.value));
-        console.log(myObjDeserialize);
+        // let myObjString = JSON.stringify(myObj);
+        // localStorage.setItem(emailInput.value, myObjString);
+        // let myObjDeserialize = JSON.parse(localStorage.getItem(emailInput.value));
+        axios.post("https://crudcrud.com/api/69555cc51d6f479c9004d1f601d7d4f1/bookingData", myObj);
+        // console.log(myObjDeserialize);
         nameInput.value = '';
         emailInput.value = '';
         phoneInput.value = '';
